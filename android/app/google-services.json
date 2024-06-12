@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1078256956153",
+    "project_id": "elewa-e3f2a",
+    "storage_bucket": "elewa-e3f2a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1078256956153:android:a101c90e953b11a070e828",
+        "android_client_info": {
+          "package_name": "com.example.elewa_test"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAesxHj9t5A_WoB2WQva045-aDsELmVgD0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
