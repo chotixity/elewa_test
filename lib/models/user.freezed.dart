@@ -22,7 +22,7 @@ User _$UserFromJson(Map<String, dynamic> json) {
 mixin _$User {
   String get id => throw _privateConstructorUsedError;
   String get fullName => throw _privateConstructorUsedError;
-  String get position => throw _privateConstructorUsedError;
+  String get position => throw _privateConstructorUsedError; //Default normal
   String? get department => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -141,6 +141,7 @@ class _$UserImpl implements _User {
   final String fullName;
   @override
   final String position;
+//Default normal
   @override
   final String? department;
 
@@ -197,7 +198,7 @@ abstract class _User implements User {
   String get fullName;
   @override
   String get position;
-  @override
+  @override //Default normal
   String? get department;
   @override
   @JsonKey(ignore: true)

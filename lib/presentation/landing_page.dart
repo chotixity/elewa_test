@@ -1,3 +1,5 @@
+import 'package:elewa_test/models/user.dart';
+import 'package:elewa_test/presentation/homepage.dart';
 import 'package:elewa_test/repository/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +17,9 @@ class _LandingPageState extends State<LandingPage> {
   final _fullNameController = TextEditingController();
   bool _login = true;
   final _formKey = GlobalKey<FormState>();
+
+  String emailPattern =
+      r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
 
   void _toggleMode() {
     setState(() {
@@ -85,6 +90,7 @@ class _LandingPageState extends State<LandingPage> {
   }
 
   Widget DesktopView(BuildContext context) {
+    final RegExp emailRegex = RegExp(emailPattern);
     return Center(
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -124,6 +130,15 @@ class _LandingPageState extends State<LandingPage> {
                   ),
                   TextFormField(
                     controller: _emailController,
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'Enter an Email';
+                      } else if (!emailRegex.hasMatch(value)) {
+                        return 'Enter a valid email';
+                      }
+
+                      return null;
+                    },
                     decoration: const InputDecoration(
                         label: Text("Email"),
                         border: OutlineInputBorder(
@@ -134,6 +149,14 @@ class _LandingPageState extends State<LandingPage> {
                   ),
                   TextFormField(
                     controller: _passwordController,
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'Enter a password';
+                      } else if (value.length < 6) {
+                        return 'Password must be 6 characters or more';
+                      }
+                      return null;
+                    },
                     decoration: const InputDecoration(
                         label: Text("Password"),
                         border: OutlineInputBorder(
@@ -193,12 +216,37 @@ class _LandingPageState extends State<LandingPage> {
         backgroundColor: WidgetStatePropertyAll<Color>(Colors.green),
       ),
       onPressed: () {
-        _login
-            ? Auth().signIn(_emailController.text, _passwordController.text)
-            : Auth().signUp(_emailController.text, _passwordController.text,
-                {'name': _fullNameController.text});
+        _formKey.currentState!.validate();
+        try {
+          _login
+              ? Auth().signIn(_emailController.text, _passwordController.text)
+              : Auth().signUp(_emailController.text, _passwordController.text,
+                  _fullNameController.text);
+          Navigator.pushReplacement(context,
+              MaterialPageRoute(builder: (context) => const Homepage()));
+        } catch (e) {
+          _showErrorDialog(e.toString());
+        }
       },
       child: Text(_login ? 'Login' : 'Sign Up'),
+    );
+  }
+
+  void _showErrorDialog(String message) {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text('An Error Occurred'),
+        content: Text(message),
+        actions: <Widget>[
+          TextButton(
+            child: const Text('Okay'),
+            onPressed: () {
+              Navigator.of(ctx).pop();
+            },
+          ),
+        ],
+      ),
     );
   }
 }

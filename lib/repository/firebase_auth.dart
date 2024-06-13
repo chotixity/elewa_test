@@ -1,21 +1,26 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import '../models/user.dart' as localUser;
 
 class Auth {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   // Sign up with email and password
-  Future<void> signUp(
-      String email, String password, Map<String, dynamic> userData) async {
+  Future<void> signUp(String email, String password, String fullName) async {
     try {
       UserCredential userCredential = await _firebaseAuth
           .createUserWithEmailAndPassword(email: email, password: password);
+      final user = userCredential.user;
       // Store user data in Firestore
-      await _firestore
-          .collection('users')
-          .doc(userCredential.user?.uid)
-          .set(userData);
+      if (user != null) {
+        await _firestore.collection('users').doc(userCredential.user?.uid).set({
+          "id": userCredential.user?.uid,
+          "fullName": fullName,
+          "position": "normal",
+          "department": null
+        });
+      }
     } catch (e) {
       print(e); // Consider handling the error more gracefully
     }
@@ -27,7 +32,7 @@ class Auth {
       await _firebaseAuth.signInWithEmailAndPassword(
           email: email, password: password);
     } catch (e) {
-      print(e); // Consider handling the error more gracefully
+      print(e);
     }
   }
 

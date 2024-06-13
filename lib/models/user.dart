@@ -8,7 +8,7 @@ class User with _$User {
   const factory User({
     required String id,
     required String fullName,
-    required String position,
+    required String position, //Default normal
     String? department, // Optional, null for managers
   }) = _User;
 
