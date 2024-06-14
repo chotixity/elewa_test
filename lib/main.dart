@@ -1,7 +1,10 @@
 import 'package:elewa_test/presentation/homepage.dart';
 import 'package:elewa_test/presentation/landing_page.dart';
+import 'package:elewa_test/state/task_provider.dart';
+import 'package:elewa_test/state/users_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:provider/provider.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -19,18 +22,24 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Team Tasks',
-      navigatorKey: navigatorKey,
-      scaffoldMessengerKey: messengerKey,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider<UsersProvider>(create: (_) => UsersProvider()),
+        ChangeNotifierProvider<TaskProvider>(create: (_) => TaskProvider()),
+      ],
+      child: MaterialApp(
+        title: 'Team Tasks',
+        navigatorKey: navigatorKey,
+        scaffoldMessengerKey: messengerKey,
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+          useMaterial3: true,
+        ),
+        home: const LandingPage(),
+        routes: {
+          Homepage.routeName: (context) => const Homepage(),
+        },
       ),
-      home: const LandingPage(),
-      routes: {
-        Homepage.routeName: (context) => const Homepage(),
-      },
     );
   }
 }

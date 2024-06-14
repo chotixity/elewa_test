@@ -6,9 +6,10 @@ class UsersProvider extends ChangeNotifier {
   final _firestore = FirebaseFirestore.instance;
   get users => _users;
 
-  void assignManager(String id) async {
+  void assignManager(String id, String currentPosition) async {
     final userDoc = _firestore.collection("users").doc(id);
-    userDoc.update({'position': 'manager'});
+    final newPosition = currentPosition == 'manager' ? 'normal' : 'manager';
+    await userDoc.update({'position': newPosition});
     notifyListeners();
   }
 

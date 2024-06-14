@@ -8,6 +8,10 @@ class Auth {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
+  get currentUser {
+    _firebaseAuth.currentUser;
+  }
+
   // Sign up with email and password
   Future<User?> signUp(
     String email,

@@ -122,7 +122,7 @@ class _LandingPageState extends State<LandingPage> {
                           validator: (value) {
                             if (value!.isEmpty) {
                               return "Enter full name";
-                            } else if (value.contains(" ")) {
+                            } else if (!value.contains(" ")) {
                               return "Please enter ypur second or last name";
                             }
                             return null;
