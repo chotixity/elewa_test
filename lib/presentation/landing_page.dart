@@ -1,8 +1,7 @@
-import 'package:elewa_test/models/user.dart';
-import 'package:elewa_test/presentation/homepage.dart';
 import 'package:elewa_test/repository/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import './homepage.dart';
 
 class LandingPage extends StatefulWidget {
   const LandingPage({super.key});
@@ -39,11 +38,11 @@ class _LandingPageState extends State<LandingPage> {
           if (constraints.maxWidth < 480) {
             return Padding(
                 padding: const EdgeInsets.only(top: 100, left: 20, right: 20),
-                child: MobileView(context));
+                child: mobileView(context));
           } else {
             return Padding(
               padding: const EdgeInsets.all(30.0),
-              child: DesktopView(context),
+              child: desktopView(context),
             );
           }
         }),
@@ -51,7 +50,7 @@ class _LandingPageState extends State<LandingPage> {
     );
   }
 
-  Widget MobileView(BuildContext context) {
+  Widget mobileView(BuildContext context) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -89,7 +88,7 @@ class _LandingPageState extends State<LandingPage> {
     );
   }
 
-  Widget DesktopView(BuildContext context) {
+  Widget desktopView(BuildContext context) {
     final RegExp emailRegex = RegExp(emailPattern);
     return Center(
       child: Row(
@@ -120,6 +119,14 @@ class _LandingPageState extends State<LandingPage> {
                       ? const SizedBox()
                       : TextFormField(
                           controller: _fullNameController,
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return "Enter full name";
+                            } else if (value.contains(" ")) {
+                              return "Please enter ypur second or last name";
+                            }
+                            return null;
+                          },
                           decoration: const InputDecoration(
                               label: Text("FullName"),
                               border: OutlineInputBorder(
@@ -215,17 +222,24 @@ class _LandingPageState extends State<LandingPage> {
         foregroundColor: WidgetStatePropertyAll<Color>(Colors.white),
         backgroundColor: WidgetStatePropertyAll<Color>(Colors.green),
       ),
-      onPressed: () {
-        _formKey.currentState!.validate();
-        try {
-          _login
-              ? Auth().signIn(_emailController.text, _passwordController.text)
-              : Auth().signUp(_emailController.text, _passwordController.text,
-                  _fullNameController.text);
-          Navigator.pushReplacement(context,
-              MaterialPageRoute(builder: (context) => const Homepage()));
-        } catch (e) {
-          _showErrorDialog(e.toString());
+      onPressed: () async {
+        if (_formKey.currentState!.validate()) {
+          try {
+            if (_login) {
+              await Auth().signIn(
+                _emailController.text,
+                _passwordController.text,
+              );
+            } else {
+              await Auth().signUp(
+                _emailController.text,
+                _passwordController.text,
+                _fullNameController.text,
+              );
+            }
+          } catch (e) {
+            _showErrorDialog(e.toString());
+          }
         }
       },
       child: Text(_login ? 'Login' : 'Sign Up'),

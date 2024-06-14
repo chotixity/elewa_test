@@ -12,6 +12,7 @@ enum Progress {
 @freezed
 class Task with _$Task {
   const factory Task({
+    required String userId,
     required String taskId,
     required String title,
     required String description,

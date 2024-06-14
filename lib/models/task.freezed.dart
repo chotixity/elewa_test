@@ -20,6 +20,7 @@ Task _$TaskFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$Task {
+  String get userId => throw _privateConstructorUsedError;
   String get taskId => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
   String get description => throw _privateConstructorUsedError;
@@ -36,7 +37,11 @@ abstract class $TaskCopyWith<$Res> {
       _$TaskCopyWithImpl<$Res, Task>;
   @useResult
   $Res call(
-      {String taskId, String title, String description, Progress progress});
+      {String userId,
+      String taskId,
+      String title,
+      String description,
+      Progress progress});
 }
 
 /// @nodoc
@@ -52,12 +57,17 @@ class _$TaskCopyWithImpl<$Res, $Val extends Task>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? userId = null,
     Object? taskId = null,
     Object? title = null,
     Object? description = null,
     Object? progress = null,
   }) {
     return _then(_value.copyWith(
+      userId: null == userId
+          ? _value.userId
+          : userId // ignore: cast_nullable_to_non_nullable
+              as String,
       taskId: null == taskId
           ? _value.taskId
           : taskId // ignore: cast_nullable_to_non_nullable
@@ -86,7 +96,11 @@ abstract class _$$TaskImplCopyWith<$Res> implements $TaskCopyWith<$Res> {
   @override
   @useResult
   $Res call(
-      {String taskId, String title, String description, Progress progress});
+      {String userId,
+      String taskId,
+      String title,
+      String description,
+      Progress progress});
 }
 
 /// @nodoc
@@ -99,12 +113,17 @@ class __$$TaskImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? userId = null,
     Object? taskId = null,
     Object? title = null,
     Object? description = null,
     Object? progress = null,
   }) {
     return _then(_$TaskImpl(
+      userId: null == userId
+          ? _value.userId
+          : userId // ignore: cast_nullable_to_non_nullable
+              as String,
       taskId: null == taskId
           ? _value.taskId
           : taskId // ignore: cast_nullable_to_non_nullable
@@ -129,7 +148,8 @@ class __$$TaskImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$TaskImpl implements _Task {
   const _$TaskImpl(
-      {required this.taskId,
+      {required this.userId,
+      required this.taskId,
       required this.title,
       required this.description,
       this.progress = Progress.assigned});
@@ -137,6 +157,8 @@ class _$TaskImpl implements _Task {
   factory _$TaskImpl.fromJson(Map<String, dynamic> json) =>
       _$$TaskImplFromJson(json);
 
+  @override
+  final String userId;
   @override
   final String taskId;
   @override
@@ -149,7 +171,7 @@ class _$TaskImpl implements _Task {
 
   @override
   String toString() {
-    return 'Task(taskId: $taskId, title: $title, description: $description, progress: $progress)';
+    return 'Task(userId: $userId, taskId: $taskId, title: $title, description: $description, progress: $progress)';
   }
 
   @override
@@ -157,6 +179,7 @@ class _$TaskImpl implements _Task {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$TaskImpl &&
+            (identical(other.userId, userId) || other.userId == userId) &&
             (identical(other.taskId, taskId) || other.taskId == taskId) &&
             (identical(other.title, title) || other.title == title) &&
             (identical(other.description, description) ||
@@ -168,7 +191,7 @@ class _$TaskImpl implements _Task {
   @JsonKey(ignore: true)
   @override
   int get hashCode =>
-      Object.hash(runtimeType, taskId, title, description, progress);
+      Object.hash(runtimeType, userId, taskId, title, description, progress);
 
   @JsonKey(ignore: true)
   @override
@@ -186,13 +209,16 @@ class _$TaskImpl implements _Task {
 
 abstract class _Task implements Task {
   const factory _Task(
-      {required final String taskId,
+      {required final String userId,
+      required final String taskId,
       required final String title,
       required final String description,
       final Progress progress}) = _$TaskImpl;
 
   factory _Task.fromJson(Map<String, dynamic> json) = _$TaskImpl.fromJson;
 
+  @override
+  String get userId;
   @override
   String get taskId;
   @override
