@@ -1,7 +1,6 @@
 import 'package:elewa_test/repository/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import './homepage.dart';
 
 class LandingPage extends StatefulWidget {
   const LandingPage({super.key});
@@ -79,7 +78,7 @@ class _LandingPageState extends State<LandingPage> {
                 const SizedBox(
                   height: 40,
                 ),
-                LoginButton()
+                loginButton()
               ],
             ),
           ),
@@ -172,7 +171,7 @@ class _LandingPageState extends State<LandingPage> {
                   const SizedBox(
                     height: 30,
                   ),
-                  LoginButton(),
+                  loginButton(),
                   const SizedBox(
                     height: 30,
                   ),
@@ -216,7 +215,7 @@ class _LandingPageState extends State<LandingPage> {
     );
   }
 
-  ElevatedButton LoginButton() {
+  ElevatedButton loginButton() {
     return ElevatedButton(
       style: const ButtonStyle(
         foregroundColor: WidgetStatePropertyAll<Color>(Colors.white),

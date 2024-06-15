@@ -1,5 +1,7 @@
-import 'package:elewa_test/presentation/homepage.dart';
+import 'package:elewa_test/presentation/admin_page.dart';
 import 'package:elewa_test/presentation/landing_page.dart';
+import 'package:elewa_test/presentation/manager_screen.dart';
+import 'presentation/normal_user_page.dart';
 import 'package:elewa_test/state/task_provider.dart';
 import 'package:elewa_test/state/users_provider.dart';
 import 'package:flutter/material.dart';
@@ -37,7 +39,9 @@ class MyApp extends StatelessWidget {
         ),
         home: const LandingPage(),
         routes: {
-          Homepage.routeName: (context) => const Homepage(),
+          ManagerScreen.routeName: (context) => const ManagerScreen(),
+          AdminPage.routeName: (context) => const AdminPage(),
+          NormalUserPage.routename: (context) => const NormalUserPage(),
         },
       ),
     );

@@ -2,16 +2,16 @@ import 'package:elewa_test/presentation/assign_managers.dart';
 import 'package:elewa_test/repository/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class Homepage extends StatefulWidget {
-  static const routeName = '/Homepage';
-  const Homepage({super.key});
+class AdminPage extends StatefulWidget {
+  static const routeName = '/AdminPage';
+  const AdminPage({super.key});
 
   @override
-  State<Homepage> createState() => _HomepageState();
+  State<AdminPage> createState() => _AdminPageState();
 }
 
-class _HomepageState extends State<Homepage> {
-  final user = Auth().currentUser;
+class _AdminPageState extends State<AdminPage> {
+  // final user = Auth().currentUser;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,7 +19,7 @@ class _HomepageState extends State<Homepage> {
         automaticallyImplyLeading: false,
         // leading: null,
         backgroundColor: Colors.transparent,
-        title: Text('Welcome $user'),
+        //  title: Text('Welcome $user'),
       ),
       body: const AllUsersList(),
     );

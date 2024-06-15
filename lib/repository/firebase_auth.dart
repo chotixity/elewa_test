@@ -1,16 +1,18 @@
-import 'package:elewa_test/presentation/homepage.dart';
+import 'package:elewa_test/presentation/admin_page.dart';
+import 'package:elewa_test/presentation/manager_screen.dart';
+import 'package:elewa_test/presentation/normal_user_page.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../main.dart';
+import '../models/user.dart' as localUser;
 
 class Auth {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  Map<String, dynamic> _currentUserDetails = {};
 
-  get currentUser {
-    _firebaseAuth.currentUser;
-  }
+  get currentUserDetails => _currentUserDetails;
 
   // Sign up with email and password
   Future<User?> signUp(
@@ -31,7 +33,7 @@ class Auth {
           "department": null
         });
         // Navigate to HomePage on success
-        navigatorKey.currentState!.pushReplacementNamed(Homepage.routeName);
+        _authNavOptions();
       }
       return user;
     } on FirebaseAuthException catch (e) {
@@ -71,7 +73,7 @@ class Auth {
       UserCredential userCredential = await _firebaseAuth
           .signInWithEmailAndPassword(email: email, password: password);
       // Navigate to HomePage on success
-      navigatorKey.currentState!.pushReplacementNamed(Homepage.routeName);
+      _authNavOptions();
       return userCredential.user;
     } on FirebaseAuthException catch (e) {
       String errorMessage;
@@ -125,6 +127,41 @@ class Auth {
       messengerKey.currentState!.showSnackBar(const SnackBar(
           content: Text('An error occurred. Please try again.')));
       print(e);
+    }
+  }
+
+  // Method to get current user details from Firestore
+  Future<localUser.User?> getUserDetails() async {
+    User? user = _firebaseAuth.currentUser;
+    print(user);
+    if (user != null) {
+      try {
+        DocumentSnapshot userDoc =
+            await _firestore.collection('users').doc(user.uid).get();
+        if (userDoc.data() != null) {
+          _currentUserDetails = userDoc.data() as Map<String, dynamic>;
+          return localUser.User.fromJson(
+              userDoc.data()! as Map<String, dynamic>);
+        }
+      } catch (e) {
+        print('Failed to fetch user details: $e');
+      }
+    }
+    return null;
+  }
+
+//A function to decide on  which screen to navigate to based on the user
+  void _authNavOptions() async {
+    await getUserDetails();
+    debugPrint(_currentUserDetails.toString());
+    if (_currentUserDetails.isEmpty) {
+      return;
+    } else if (_currentUserDetails['position'] == 'manager') {
+      navigatorKey.currentState!.pushReplacementNamed(ManagerScreen.routeName);
+    } else if (_currentUserDetails['position'] == 'normal') {
+      navigatorKey.currentState!.pushReplacementNamed(NormalUserPage.routename);
+    } else {
+      navigatorKey.currentState!.pushReplacementNamed(AdminPage.routeName);
     }
   }
 }

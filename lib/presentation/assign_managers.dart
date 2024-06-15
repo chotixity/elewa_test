@@ -12,12 +12,13 @@ class AllUsersList extends StatefulWidget {
 class _AllUsersListState extends State<AllUsersList> {
   @override
   Widget build(BuildContext context) {
+    final provider = Provider.of<UsersProvider>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
         title: const Text('All Users'),
       ),
       body: FutureBuilder<List<Map<String, dynamic>>>(
-        future: Provider.of<UsersProvider>(context).getAllUsers(),
+        future: provider.getAllUsers(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
@@ -48,13 +49,14 @@ class _AllUsersListState extends State<AllUsersList> {
                               ? 'Assign Normal'
                               : 'Assign Manager'),
                           onPressed: () {
-                            Provider.of<UsersProvider>(context, listen: false)
-                                .assignManager(user['id'], currentPosition);
+                            provider.assignManager(user['id'], currentPosition);
                           },
                         ),
                         const Spacer(),
                         IconButton.filledTonal(
-                          onPressed: () {},
+                          onPressed: () {
+                            provider.deleteUser(user['id']);
+                          },
                           icon: const Icon(Icons.delete),
                         )
                       ],
