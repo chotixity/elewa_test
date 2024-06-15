@@ -1,3 +1,4 @@
+import 'package:elewa_test/presentation/add_task_widget.dart';
 import 'package:flutter/material.dart';
 
 class ManagerScreen extends StatefulWidget {
@@ -49,9 +50,12 @@ class _ManagerScreenState extends State<ManagerScreen>
             FloatingActionButton(
               heroTag: null, // Needed to use multiple FABs
               onPressed: () {
+                showDialog(
+                    context: context,
+                    builder: (context) => const AddTaskWidget());
                 // Perform action for first button
               },
-              child: const Icon(Icons.create),
+              child: const Icon(Icons.add_task),
             ),
           if (isExpanded)
             FloatingActionButton(
@@ -59,7 +63,7 @@ class _ManagerScreenState extends State<ManagerScreen>
               onPressed: () {
                 // Perform action for second button
               },
-              child: const Icon(Icons.camera_alt),
+              child: const Icon(Icons.group_add),
             ),
           FloatingActionButton.large(
             onPressed: toggleButtons,
