@@ -1,5 +1,6 @@
 import 'package:elewa_test/presentation/widgets/add_department_widget.dart';
 import 'package:elewa_test/presentation/widgets/add_task_widget.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import '../state/users_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:elewa_test/repository/firebase_auth.dart';
@@ -15,7 +16,7 @@ class ManagerScreen extends StatefulWidget {
 
 class _ManagerScreenState extends State<ManagerScreen>
     with SingleTickerProviderStateMixin {
-  final _auth = Auth();
+  final _auth = FirebaseAuth.instance;
   late AnimationController _controller;
   bool isExpanded = false;
 
@@ -26,6 +27,13 @@ class _ManagerScreenState extends State<ManagerScreen>
       duration: const Duration(milliseconds: 500),
       vsync: this,
     );
+  }
+
+  @override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
+    Provider.of<UsersProvider>(context, listen: false).getUserDetails();
   }
 
   @override
@@ -51,7 +59,8 @@ class _ManagerScreenState extends State<ManagerScreen>
     return Scaffold(
       body: Column(
         children: [
-          Text("Welcome ${userDetails["fullName"]}"),
+          Text(
+              "Welcome ${userDetails["fullName"]}, ${userDetails["position"]}"),
         ],
       ),
       floatingActionButton: Column(

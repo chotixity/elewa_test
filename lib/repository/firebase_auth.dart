@@ -29,7 +29,7 @@ class Auth {
           "position": "normal",
           "department": null
         });
-        await _setUserDetails(user.uid);
+        //await _setUserDetails(user.uid);
         await _authNavOptions();
       }
       return user;
@@ -67,7 +67,7 @@ class Auth {
     try {
       UserCredential userCredential = await _firebaseAuth
           .signInWithEmailAndPassword(email: email, password: password);
-      await _setUserDetails(userCredential.user!.uid);
+      // await _setUserDetails(userCredential.user!.uid);
       await _authNavOptions();
       return userCredential.user;
     } on FirebaseAuthException catch (e) {
@@ -119,28 +119,19 @@ class Auth {
     }
   }
 
-  // Method to set current user details from Firestore
-  Future<void> _setUserDetails(String uid) async {
-    try {
-      DocumentSnapshot userDoc =
-          await _firestore.collection('users').doc(uid).get();
-      if (userDoc.data() != null) {
-        final userDetails = userDoc.data() as Map<String, dynamic>;
-        Provider.of<UsersProvider>(navigatorKey.currentContext!, listen: false)
-            .setUserDetails(userDetails);
-      }
-    } catch (e) {
-      print('Failed to fetch user details: $e');
-    }
-  }
-
   // A function to decide on which screen to navigate based on the user
   Future<void> _authNavOptions() async {
-    final userDetails =
-        Provider.of<UsersProvider>(navigatorKey.currentContext!, listen: false)
-            .currentUserDetails;
+    final doc = await _firestore
+        .collection("users")
+        .doc(_firebaseAuth.currentUser!.uid)
+        .get();
+    Map<String, dynamic>? userDetails;
+    if (doc.data() != null) {
+      userDetails = doc.data();
+    }
+
     debugPrint('Current User Details: $userDetails');
-    if (userDetails.isEmpty) {
+    if (userDetails!.isEmpty) {
       debugPrint('User details are empty');
       return;
     } else if (userDetails['position'] == 'manager') {

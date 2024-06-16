@@ -1,19 +1,26 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 //A class for managina all user functions
 class UsersProvider extends ChangeNotifier {
   List _users = [];
   final _firestore = FirebaseFirestore.instance;
+  final _auth = FirebaseAuth.instance;
   get users => _users;
 
   Map<String, dynamic> _currentUserDetails = {};
 
   Map<String, dynamic> get currentUserDetails => _currentUserDetails;
 
-  void setUserDetails(Map<String, dynamic> userDetails) {
-    _currentUserDetails = userDetails;
-    notifyListeners();
+  void getUserDetails() async {
+    final doc =
+        await _firestore.collection("users").doc(_auth.currentUser!.uid).get();
+    if (doc.exists) {
+      Map<String, dynamic> userDetails = doc.data() as Map<String, dynamic>;
+      _currentUserDetails = userDetails;
+      notifyListeners();
+    }
   }
 
   //Responsible for assigning a user to be a manager or a normal user
