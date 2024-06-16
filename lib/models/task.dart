@@ -16,6 +16,7 @@ class Task with _$Task {
     required String taskId,
     required String title,
     required String description,
+    required DateTime dueDate,
     @Default(Progress.assigned) Progress progress,
   }) = _Task;
 

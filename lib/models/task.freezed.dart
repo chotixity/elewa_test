@@ -24,6 +24,7 @@ mixin _$Task {
   String get taskId => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
   String get description => throw _privateConstructorUsedError;
+  DateTime get dueDate => throw _privateConstructorUsedError;
   Progress get progress => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -41,6 +42,7 @@ abstract class $TaskCopyWith<$Res> {
       String taskId,
       String title,
       String description,
+      DateTime dueDate,
       Progress progress});
 }
 
@@ -61,6 +63,7 @@ class _$TaskCopyWithImpl<$Res, $Val extends Task>
     Object? taskId = null,
     Object? title = null,
     Object? description = null,
+    Object? dueDate = null,
     Object? progress = null,
   }) {
     return _then(_value.copyWith(
@@ -80,6 +83,10 @@ class _$TaskCopyWithImpl<$Res, $Val extends Task>
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
               as String,
+      dueDate: null == dueDate
+          ? _value.dueDate
+          : dueDate // ignore: cast_nullable_to_non_nullable
+              as DateTime,
       progress: null == progress
           ? _value.progress
           : progress // ignore: cast_nullable_to_non_nullable
@@ -100,6 +107,7 @@ abstract class _$$TaskImplCopyWith<$Res> implements $TaskCopyWith<$Res> {
       String taskId,
       String title,
       String description,
+      DateTime dueDate,
       Progress progress});
 }
 
@@ -117,6 +125,7 @@ class __$$TaskImplCopyWithImpl<$Res>
     Object? taskId = null,
     Object? title = null,
     Object? description = null,
+    Object? dueDate = null,
     Object? progress = null,
   }) {
     return _then(_$TaskImpl(
@@ -136,6 +145,10 @@ class __$$TaskImplCopyWithImpl<$Res>
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
               as String,
+      dueDate: null == dueDate
+          ? _value.dueDate
+          : dueDate // ignore: cast_nullable_to_non_nullable
+              as DateTime,
       progress: null == progress
           ? _value.progress
           : progress // ignore: cast_nullable_to_non_nullable
@@ -152,6 +165,7 @@ class _$TaskImpl implements _Task {
       required this.taskId,
       required this.title,
       required this.description,
+      required this.dueDate,
       this.progress = Progress.assigned});
 
   factory _$TaskImpl.fromJson(Map<String, dynamic> json) =>
@@ -166,12 +180,14 @@ class _$TaskImpl implements _Task {
   @override
   final String description;
   @override
+  final DateTime dueDate;
+  @override
   @JsonKey()
   final Progress progress;
 
   @override
   String toString() {
-    return 'Task(userId: $userId, taskId: $taskId, title: $title, description: $description, progress: $progress)';
+    return 'Task(userId: $userId, taskId: $taskId, title: $title, description: $description, dueDate: $dueDate, progress: $progress)';
   }
 
   @override
@@ -184,14 +200,15 @@ class _$TaskImpl implements _Task {
             (identical(other.title, title) || other.title == title) &&
             (identical(other.description, description) ||
                 other.description == description) &&
+            (identical(other.dueDate, dueDate) || other.dueDate == dueDate) &&
             (identical(other.progress, progress) ||
                 other.progress == progress));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, userId, taskId, title, description, progress);
+  int get hashCode => Object.hash(
+      runtimeType, userId, taskId, title, description, dueDate, progress);
 
   @JsonKey(ignore: true)
   @override
@@ -213,6 +230,7 @@ abstract class _Task implements Task {
       required final String taskId,
       required final String title,
       required final String description,
+      required final DateTime dueDate,
       final Progress progress}) = _$TaskImpl;
 
   factory _Task.fromJson(Map<String, dynamic> json) = _$TaskImpl.fromJson;
@@ -225,6 +243,8 @@ abstract class _Task implements Task {
   String get title;
   @override
   String get description;
+  @override
+  DateTime get dueDate;
   @override
   Progress get progress;
   @override

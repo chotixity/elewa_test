@@ -6,12 +6,13 @@ class TaskProvider extends ChangeNotifier {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   // Create a task
-  void addTask(
-      String userId, String title, String description, Progress progress) {
+  void addTask(String userId, String title, String description,
+      Progress progress, DateTime dueDate) {
     final taskDocRef = _firestore.collection("tasks").doc();
     final task = Task(
       userId: userId,
       taskId: taskDocRef.id,
+      dueDate: dueDate,
       title: title,
       description: description,
       progress: progress,

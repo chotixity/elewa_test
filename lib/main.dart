@@ -1,6 +1,7 @@
 import 'package:elewa_test/presentation/admin_page.dart';
 import 'package:elewa_test/presentation/landing_page.dart';
 import 'package:elewa_test/presentation/manager_screen.dart';
+import 'package:elewa_test/state/department_provider.dart';
 import 'presentation/normal_user_page.dart';
 import 'package:elewa_test/state/task_provider.dart';
 import 'package:elewa_test/state/users_provider.dart';
@@ -28,6 +29,8 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider<UsersProvider>(create: (_) => UsersProvider()),
         ChangeNotifierProvider<TaskProvider>(create: (_) => TaskProvider()),
+        ChangeNotifierProvider<DepartmentProvider>(
+            create: (_) => DepartmentProvider()),
       ],
       child: MaterialApp(
         title: 'Team Tasks',

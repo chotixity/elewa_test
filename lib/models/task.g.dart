@@ -11,6 +11,7 @@ _$TaskImpl _$$TaskImplFromJson(Map<String, dynamic> json) => _$TaskImpl(
       taskId: json['taskId'] as String,
       title: json['title'] as String,
       description: json['description'] as String,
+      dueDate: DateTime.parse(json['dueDate'] as String),
       progress: $enumDecodeNullable(_$ProgressEnumMap, json['progress']) ??
           Progress.assigned,
     );
@@ -21,6 +22,7 @@ Map<String, dynamic> _$$TaskImplToJson(_$TaskImpl instance) =>
       'taskId': instance.taskId,
       'title': instance.title,
       'description': instance.description,
+      'dueDate': instance.dueDate.toIso8601String(),
       'progress': _$ProgressEnumMap[instance.progress]!,
     };
 

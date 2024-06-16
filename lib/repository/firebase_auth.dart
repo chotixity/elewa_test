@@ -1,18 +1,16 @@
-import 'package:elewa_test/presentation/admin_page.dart';
-import 'package:elewa_test/presentation/manager_screen.dart';
-import 'package:elewa_test/presentation/normal_user_page.dart';
-import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
+import '../presentation/manager_screen.dart';
+import '../presentation/admin_page.dart';
+import '../presentation/normal_user_page.dart';
+import 'package:provider/provider.dart';
+import '../state/users_provider.dart';
 import '../main.dart';
-import '../models/user.dart' as localUser;
 
 class Auth {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  Map<String, dynamic> _currentUserDetails = {};
-
-  get currentUserDetails => _currentUserDetails;
 
   // Sign up with email and password
   Future<User?> signUp(
@@ -24,7 +22,6 @@ class Auth {
       UserCredential userCredential = await _firebaseAuth
           .createUserWithEmailAndPassword(email: email, password: password);
       final user = userCredential.user;
-      // Store user data in Firestore
       if (user != null) {
         await _firestore.collection('users').doc(user.uid).set({
           "id": user.uid,
@@ -32,8 +29,8 @@ class Auth {
           "position": "normal",
           "department": null
         });
-        // Navigate to HomePage on success
-        _authNavOptions();
+        await _setUserDetails(user.uid);
+        await _authNavOptions();
       }
       return user;
     } on FirebaseAuthException catch (e) {
@@ -52,11 +49,9 @@ class Auth {
         default:
           errorMessage = 'An unknown error occurred.';
       }
-      // Show error message to the user
       messengerKey.currentState!
           .showSnackBar(SnackBar(content: Text(errorMessage)));
     } catch (e) {
-      // Generic error handling
       messengerKey.currentState!.showSnackBar(const SnackBar(
           content: Text('An error occurred. Please try again.')));
       print(e);
@@ -72,8 +67,8 @@ class Auth {
     try {
       UserCredential userCredential = await _firebaseAuth
           .signInWithEmailAndPassword(email: email, password: password);
-      // Navigate to HomePage on success
-      _authNavOptions();
+      await _setUserDetails(userCredential.user!.uid);
+      await _authNavOptions();
       return userCredential.user;
     } on FirebaseAuthException catch (e) {
       String errorMessage;
@@ -87,11 +82,9 @@ class Auth {
         default:
           errorMessage = 'An unknown error occurred.';
       }
-      // Show error message to the user
       messengerKey.currentState!
           .showSnackBar(SnackBar(content: Text(errorMessage)));
     } catch (e) {
-      // Generic error handling
       messengerKey.currentState!.showSnackBar(const SnackBar(
           content: Text('An error occurred. Please try again.')));
       print(e);
@@ -100,9 +93,7 @@ class Auth {
   }
 
   // Reset password
-  Future<void> resetPassword(
-    String email,
-  ) async {
+  Future<void> resetPassword(String email) async {
     try {
       await _firebaseAuth.sendPasswordResetEmail(email: email);
       messengerKey.currentState!.showSnackBar(
@@ -119,48 +110,47 @@ class Auth {
         default:
           errorMessage = 'An unknown error occurred.';
       }
-      // Show error message to the user
       messengerKey.currentState!
           .showSnackBar(SnackBar(content: Text(errorMessage)));
     } catch (e) {
-      // Generic error handling
       messengerKey.currentState!.showSnackBar(const SnackBar(
           content: Text('An error occurred. Please try again.')));
       print(e);
     }
   }
 
-  // Method to get current user details from Firestore
-  Future<localUser.User?> getUserDetails() async {
-    User? user = _firebaseAuth.currentUser;
-    print(user);
-    if (user != null) {
-      try {
-        DocumentSnapshot userDoc =
-            await _firestore.collection('users').doc(user.uid).get();
-        if (userDoc.data() != null) {
-          _currentUserDetails = userDoc.data() as Map<String, dynamic>;
-          return localUser.User.fromJson(
-              userDoc.data()! as Map<String, dynamic>);
-        }
-      } catch (e) {
-        print('Failed to fetch user details: $e');
+  // Method to set current user details from Firestore
+  Future<void> _setUserDetails(String uid) async {
+    try {
+      DocumentSnapshot userDoc =
+          await _firestore.collection('users').doc(uid).get();
+      if (userDoc.data() != null) {
+        final userDetails = userDoc.data() as Map<String, dynamic>;
+        Provider.of<UsersProvider>(navigatorKey.currentContext!, listen: false)
+            .setUserDetails(userDetails);
       }
+    } catch (e) {
+      print('Failed to fetch user details: $e');
     }
-    return null;
   }
 
-//A function to decide on  which screen to navigate to based on the user
-  void _authNavOptions() async {
-    await getUserDetails();
-    debugPrint(_currentUserDetails.toString());
-    if (_currentUserDetails.isEmpty) {
+  // A function to decide on which screen to navigate based on the user
+  Future<void> _authNavOptions() async {
+    final userDetails =
+        Provider.of<UsersProvider>(navigatorKey.currentContext!, listen: false)
+            .currentUserDetails;
+    debugPrint('Current User Details: $userDetails');
+    if (userDetails.isEmpty) {
+      debugPrint('User details are empty');
       return;
-    } else if (_currentUserDetails['position'] == 'manager') {
+    } else if (userDetails['position'] == 'manager') {
+      debugPrint('Navigating to Manager Screen');
       navigatorKey.currentState!.pushReplacementNamed(ManagerScreen.routeName);
-    } else if (_currentUserDetails['position'] == 'normal') {
+    } else if (userDetails['position'] == 'normal') {
+      debugPrint('Navigating to Normal User Page');
       navigatorKey.currentState!.pushReplacementNamed(NormalUserPage.routename);
     } else {
+      debugPrint('Navigating to Admin Page');
       navigatorKey.currentState!.pushReplacementNamed(AdminPage.routeName);
     }
   }

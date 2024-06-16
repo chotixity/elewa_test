@@ -7,6 +7,15 @@ class UsersProvider extends ChangeNotifier {
   final _firestore = FirebaseFirestore.instance;
   get users => _users;
 
+  Map<String, dynamic> _currentUserDetails = {};
+
+  Map<String, dynamic> get currentUserDetails => _currentUserDetails;
+
+  void setUserDetails(Map<String, dynamic> userDetails) {
+    _currentUserDetails = userDetails;
+    notifyListeners();
+  }
+
   //Responsible for assigning a user to be a manager or a normal user
   void assignManager(String id, String currentPosition) async {
     final userDoc = _firestore.collection("users").doc(id);

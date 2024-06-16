@@ -1,8 +1,12 @@
-import 'package:elewa_test/presentation/add_task_widget.dart';
+import 'package:elewa_test/presentation/widgets/add_department_widget.dart';
+import 'package:elewa_test/presentation/widgets/add_task_widget.dart';
+import '../state/users_provider.dart';
+import 'package:provider/provider.dart';
+import 'package:elewa_test/repository/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class ManagerScreen extends StatefulWidget {
-  static const routeName = "mangerScreen";
+  static const routeName = "managerScreen";
   const ManagerScreen({super.key});
 
   @override
@@ -11,6 +15,7 @@ class ManagerScreen extends StatefulWidget {
 
 class _ManagerScreenState extends State<ManagerScreen>
     with SingleTickerProviderStateMixin {
+  final _auth = Auth();
   late AnimationController _controller;
   bool isExpanded = false;
 
@@ -42,7 +47,13 @@ class _ManagerScreenState extends State<ManagerScreen>
 
   @override
   Widget build(BuildContext context) {
+    final userDetails = Provider.of<UsersProvider>(context).currentUserDetails;
     return Scaffold(
+      body: Column(
+        children: [
+          Text("Welcome ${userDetails["fullName"]}"),
+        ],
+      ),
       floatingActionButton: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
@@ -53,7 +64,6 @@ class _ManagerScreenState extends State<ManagerScreen>
                 showDialog(
                     context: context,
                     builder: (context) => const AddTaskWidget());
-                // Perform action for first button
               },
               child: const Icon(Icons.add_task),
             ),
@@ -61,7 +71,9 @@ class _ManagerScreenState extends State<ManagerScreen>
             FloatingActionButton(
               heroTag: null, // Needed to use multiple FABs
               onPressed: () {
-                // Perform action for second button
+                showDialog(
+                    context: context,
+                    builder: (context) => AddDepartmentWidget());
               },
               child: const Icon(Icons.group_add),
             ),
