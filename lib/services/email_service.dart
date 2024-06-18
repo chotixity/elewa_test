@@ -2,9 +2,11 @@ import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server.dart';
 
 class EmailService {
-  final String username = '0838.2020@students.ku.ac.ke';
-  final String password = '26223646';
+  //Mail details for use to send emails, env had a challenge with wasm so you can add yours to send email notifications
+  final String username = '';
+  final String password = '';
 
+  //Sending emails
   Future<void> sendTaskNotification(
       String recipientEmail, String subject, String body) async {
     final smtpServer = gmail(username, password);

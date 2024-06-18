@@ -8,6 +8,7 @@ class DepartmentProvider with ChangeNotifier {
 
   Department? get departmentDetails => _departmentDetails;
 
+  //Adding a department
   void addDepartment(String departmentName, String description) {
     final departmentDocRef = _firestore.collection("departments").doc();
     final department = Department(
@@ -18,6 +19,7 @@ class DepartmentProvider with ChangeNotifier {
     notifyListeners();
   }
 
+//get all departments from database
   Future<List<Department>> getAllDepartments() async {
     try {
       final snapshot = await _firestore.collection("departments").get();

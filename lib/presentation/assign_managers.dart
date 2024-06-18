@@ -1,7 +1,7 @@
-import 'package:elewa_test/providers/users_provider.dart';
-import '../models/user.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../models/user.dart';
+import '../providers/users_provider.dart';
 
 class AllUsersList extends StatefulWidget {
   const AllUsersList({super.key});
@@ -13,59 +13,65 @@ class AllUsersList extends StatefulWidget {
 class _AllUsersListState extends State<AllUsersList> {
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<UsersProvider>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
         title: const Text('All Users'),
       ),
-      body: FutureBuilder<List<User>>(
-        future: provider.getAllUsers(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            return Center(child: Text('Error: ${snapshot.error}'));
-          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return const Center(child: Text('No users found.'));
-          } else {
-            final users = snapshot.data!;
-            return ListView.builder(
-              itemCount: users.length,
-              itemBuilder: (context, index) {
-                final user = users[index];
-                final currentPosition = user.position;
-                final newPosition =
-                    currentPosition == 'manager' ? 'normal' : 'manager';
+      body: Consumer<UsersProvider>(
+        builder: (context, provider, _) {
+          return FutureBuilder<List<User>>(
+            future: provider.getAllUsers(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(child: CircularProgressIndicator());
+              } else if (snapshot.hasError) {
+                return Center(child: Text('Error: ${snapshot.error}'));
+              } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                return const Center(child: Text('No users found.'));
+              } else {
+                final users = snapshot.data!
+                    .where((user) => user.position != "admin")
+                    .toList();
+                return ListView.builder(
+                  itemCount: users.length,
+                  itemBuilder: (context, index) {
+                    final user = users[index];
+                    final currentPosition = user.position;
+                    final newPosition =
+                        currentPosition == 'manager' ? 'normal' : 'manager';
 
-                return ListTile(
-                  title: Text(user.fullName),
-                  subtitle: Text('Position: ${user.position}'),
-                  trailing: SizedBox(
-                    width: 250,
-                    child: Row(
-                      children: [
-                        ElevatedButton(
-                          child: Text(currentPosition == 'manager'
-                              ? 'Assign Normal'
-                              : 'Assign Manager'),
-                          onPressed: () {
-                            provider.assignManager(user.id, currentPosition);
-                          },
+                    return ListTile(
+                      title: Text(user.fullName),
+                      subtitle: Text('Position: ${user.position}'),
+                      trailing: SizedBox(
+                        width: 250,
+                        child: Row(
+                          children: [
+                            ElevatedButton(
+                              child: Text(currentPosition == 'manager'
+                                  ? 'Assign Normal'
+                                  : 'Assign Manager'),
+                              onPressed: () {
+                                provider.assignManager(
+                                    user.id, currentPosition);
+                              },
+                            ),
+                            const Spacer(),
+                            IconButton.filledTonal(
+                              onPressed: () {
+                                provider.deleteUser(user.id);
+                              },
+                              icon: const Icon(Icons.delete),
+                            )
+                          ],
                         ),
-                        const Spacer(),
-                        IconButton.filledTonal(
-                          onPressed: () {
-                            provider.deleteUser(user.id);
-                          },
-                          icon: const Icon(Icons.delete),
-                        )
-                      ],
-                    ),
-                  ),
+                      ),
+                    );
+                  },
                 );
-              },
-            );
-          }
+              }
+            },
+          );
         },
       ),
     );

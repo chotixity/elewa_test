@@ -79,6 +79,7 @@ class AuthService extends ChangeNotifier {
     }
   }
 
+  //A method for handling errors
   void _handleAuthError(FirebaseAuthException e) {
     String errorMessage;
     switch (e.code) {
@@ -104,10 +105,12 @@ class AuthService extends ChangeNotifier {
     _showError(errorMessage);
   }
 
+  //Showing a snackbar with an error message
   void _showError(String message) {
     messengerKey.currentState!.showSnackBar(SnackBar(content: Text(message)));
   }
 
+//Showing a message through a snackbar to the user
   void _showMessage(String message) {
     messengerKey.currentState!.showSnackBar(SnackBar(content: Text(message)));
   }
