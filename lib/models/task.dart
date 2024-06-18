@@ -18,6 +18,8 @@ class Task with _$Task {
     required String description,
     required DateTime dueDate,
     @Default(Progress.assigned) Progress progress,
+    @Default(false) bool isRecurring,
+    Duration? interval,
   }) = _Task;
 
   factory Task.fromJson(Map<String, dynamic> json) => _$TaskFromJson(json);

@@ -1,11 +1,9 @@
-import 'package:elewa_test/presentation/admin_page.dart';
-import 'package:elewa_test/presentation/landing_page.dart';
-import 'package:elewa_test/presentation/manager_screen.dart';
-import 'package:elewa_test/state/department_provider.dart';
-import 'presentation/normal_user_page.dart';
-import 'package:elewa_test/state/task_provider.dart';
-import 'package:elewa_test/state/users_provider.dart';
+import 'package:elewa_test/repository/auth_service.dart';
+import 'package:elewa_test/providers/department_provider.dart';
+import 'package:elewa_test/providers/task_provider.dart';
+import 'package:elewa_test/providers/users_provider.dart';
 import 'package:flutter/material.dart';
+import './presentation/auth_wrapper.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
 import 'firebase_options.dart';
@@ -31,8 +29,10 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider<TaskProvider>(create: (_) => TaskProvider()),
         ChangeNotifierProvider<DepartmentProvider>(
             create: (_) => DepartmentProvider()),
+        ChangeNotifierProvider<AuthService>(create: (_) => AuthService())
       ],
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         title: 'Team Tasks',
         navigatorKey: navigatorKey,
         scaffoldMessengerKey: messengerKey,
@@ -40,12 +40,7 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
         ),
-        home: const LandingPage(),
-        routes: {
-          ManagerScreen.routeName: (context) => const ManagerScreen(),
-          AdminPage.routeName: (context) => const AdminPage(),
-          NormalUserPage.routename: (context) => const NormalUserPage(),
-        },
+        home: const AuthWrapper(),
       ),
     );
   }

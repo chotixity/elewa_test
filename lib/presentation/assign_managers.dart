@@ -1,4 +1,5 @@
-import 'package:elewa_test/state/users_provider.dart';
+import 'package:elewa_test/providers/users_provider.dart';
+import '../models/user.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -17,7 +18,7 @@ class _AllUsersListState extends State<AllUsersList> {
       appBar: AppBar(
         title: const Text('All Users'),
       ),
-      body: FutureBuilder<List<Map<String, dynamic>>>(
+      body: FutureBuilder<List<User>>(
         future: provider.getAllUsers(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -32,14 +33,13 @@ class _AllUsersListState extends State<AllUsersList> {
               itemCount: users.length,
               itemBuilder: (context, index) {
                 final user = users[index];
-                final currentPosition = user['position'] ?? 'normal';
+                final currentPosition = user.position;
                 final newPosition =
                     currentPosition == 'manager' ? 'normal' : 'manager';
 
                 return ListTile(
-                  title: Text(user['fullName'] ?? 'No Name'),
-                  subtitle:
-                      Text('Position: ${user['position']}' ?? 'No Position'),
+                  title: Text(user.fullName),
+                  subtitle: Text('Position: ${user.position}'),
                   trailing: SizedBox(
                     width: 250,
                     child: Row(
@@ -49,13 +49,13 @@ class _AllUsersListState extends State<AllUsersList> {
                               ? 'Assign Normal'
                               : 'Assign Manager'),
                           onPressed: () {
-                            provider.assignManager(user['id'], currentPosition);
+                            provider.assignManager(user.id, currentPosition);
                           },
                         ),
                         const Spacer(),
                         IconButton.filledTonal(
                           onPressed: () {
-                            provider.deleteUser(user['id']);
+                            provider.deleteUser(user.id);
                           },
                           icon: const Icon(Icons.delete),
                         )

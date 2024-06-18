@@ -14,6 +14,10 @@ _$TaskImpl _$$TaskImplFromJson(Map<String, dynamic> json) => _$TaskImpl(
       dueDate: DateTime.parse(json['dueDate'] as String),
       progress: $enumDecodeNullable(_$ProgressEnumMap, json['progress']) ??
           Progress.assigned,
+      isRecurring: json['isRecurring'] as bool? ?? false,
+      interval: json['interval'] == null
+          ? null
+          : Duration(microseconds: (json['interval'] as num).toInt()),
     );
 
 Map<String, dynamic> _$$TaskImplToJson(_$TaskImpl instance) =>
@@ -24,6 +28,8 @@ Map<String, dynamic> _$$TaskImplToJson(_$TaskImpl instance) =>
       'description': instance.description,
       'dueDate': instance.dueDate.toIso8601String(),
       'progress': _$ProgressEnumMap[instance.progress]!,
+      'isRecurring': instance.isRecurring,
+      'interval': instance.interval?.inMicroseconds,
     };
 
 const _$ProgressEnumMap = {

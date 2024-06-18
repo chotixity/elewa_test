@@ -1,9 +1,10 @@
+import 'package:elewa_test/models/user.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../../models/task.dart';
 import 'package:provider/provider.dart';
-import '../../state/task_provider.dart';
-import '../../state/users_provider.dart';
+import '../../providers/task_provider.dart';
+import '../../providers/users_provider.dart';
 
 class AddTaskWidget extends StatefulWidget {
   const AddTaskWidget({super.key});
@@ -64,8 +65,7 @@ class _AddTaskWidgetState extends State<AddTaskWidget> {
             ),
             Consumer<UsersProvider>(
               // Using Consumer to listen to changes
-              builder: (ctx, usersProvider, _) =>
-                  FutureBuilder<List<Map<String, dynamic>>>(
+              builder: (ctx, usersProvider, _) => FutureBuilder<List<User>>(
                 future: usersProvider.getAllUsers(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
@@ -74,7 +74,7 @@ class _AddTaskWidgetState extends State<AddTaskWidget> {
                     return const Text('No users available');
                   } else {
                     var filteredUsers = snapshot.data!
-                        .where((user) => user['position'] == 'normal')
+                        .where((user) => user.position == 'normal')
                         .toList();
                     return DropdownButtonFormField<String>(
                       value: _selectedUserId,
@@ -83,8 +83,8 @@ class _AddTaskWidgetState extends State<AddTaskWidget> {
                       items: filteredUsers
                           .map<DropdownMenuItem<String>>(
                             (user) => DropdownMenuItem<String>(
-                              value: user['id'],
-                              child: Text(user['fullName'] ?? 'No Name'),
+                              value: user.id,
+                              child: Text(user.fullName),
                             ),
                           )
                           .toList(),

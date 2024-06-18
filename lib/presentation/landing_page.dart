@@ -1,4 +1,5 @@
-import 'package:elewa_test/repository/firebase_auth.dart';
+import 'package:elewa_test/repository/auth_service.dart';
+import 'package:provider/provider.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
@@ -223,43 +224,21 @@ class _LandingPageState extends State<LandingPage> {
       ),
       onPressed: () async {
         if (_formKey.currentState!.validate()) {
-          try {
-            if (_login) {
-              await Auth().signIn(
-                _emailController.text,
-                _passwordController.text,
-              );
-            } else {
-              await Auth().signUp(
-                _emailController.text,
-                _passwordController.text,
-                _fullNameController.text,
-              );
-            }
-          } catch (e) {
-            _showErrorDialog(e.toString());
+          if (_login) {
+            await Provider.of<AuthService>(context, listen: false).signIn(
+              _emailController.text,
+              _passwordController.text,
+            );
+          } else {
+            await Provider.of<AuthService>(context, listen: false).signUp(
+              _emailController.text,
+              _passwordController.text,
+              _fullNameController.text,
+            );
           }
         }
       },
       child: Text(_login ? 'Login' : 'Sign Up'),
-    );
-  }
-
-  void _showErrorDialog(String message) {
-    showDialog(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        title: const Text('An Error Occurred'),
-        content: Text(message),
-        actions: <Widget>[
-          TextButton(
-            child: const Text('Okay'),
-            onPressed: () {
-              Navigator.of(ctx).pop();
-            },
-          ),
-        ],
-      ),
     );
   }
 }

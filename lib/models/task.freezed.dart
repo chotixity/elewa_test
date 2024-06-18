@@ -26,6 +26,8 @@ mixin _$Task {
   String get description => throw _privateConstructorUsedError;
   DateTime get dueDate => throw _privateConstructorUsedError;
   Progress get progress => throw _privateConstructorUsedError;
+  bool get isRecurring => throw _privateConstructorUsedError;
+  Duration? get interval => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -43,7 +45,9 @@ abstract class $TaskCopyWith<$Res> {
       String title,
       String description,
       DateTime dueDate,
-      Progress progress});
+      Progress progress,
+      bool isRecurring,
+      Duration? interval});
 }
 
 /// @nodoc
@@ -65,6 +69,8 @@ class _$TaskCopyWithImpl<$Res, $Val extends Task>
     Object? description = null,
     Object? dueDate = null,
     Object? progress = null,
+    Object? isRecurring = null,
+    Object? interval = freezed,
   }) {
     return _then(_value.copyWith(
       userId: null == userId
@@ -91,6 +97,14 @@ class _$TaskCopyWithImpl<$Res, $Val extends Task>
           ? _value.progress
           : progress // ignore: cast_nullable_to_non_nullable
               as Progress,
+      isRecurring: null == isRecurring
+          ? _value.isRecurring
+          : isRecurring // ignore: cast_nullable_to_non_nullable
+              as bool,
+      interval: freezed == interval
+          ? _value.interval
+          : interval // ignore: cast_nullable_to_non_nullable
+              as Duration?,
     ) as $Val);
   }
 }
@@ -108,7 +122,9 @@ abstract class _$$TaskImplCopyWith<$Res> implements $TaskCopyWith<$Res> {
       String title,
       String description,
       DateTime dueDate,
-      Progress progress});
+      Progress progress,
+      bool isRecurring,
+      Duration? interval});
 }
 
 /// @nodoc
@@ -127,6 +143,8 @@ class __$$TaskImplCopyWithImpl<$Res>
     Object? description = null,
     Object? dueDate = null,
     Object? progress = null,
+    Object? isRecurring = null,
+    Object? interval = freezed,
   }) {
     return _then(_$TaskImpl(
       userId: null == userId
@@ -153,6 +171,14 @@ class __$$TaskImplCopyWithImpl<$Res>
           ? _value.progress
           : progress // ignore: cast_nullable_to_non_nullable
               as Progress,
+      isRecurring: null == isRecurring
+          ? _value.isRecurring
+          : isRecurring // ignore: cast_nullable_to_non_nullable
+              as bool,
+      interval: freezed == interval
+          ? _value.interval
+          : interval // ignore: cast_nullable_to_non_nullable
+              as Duration?,
     ));
   }
 }
@@ -166,7 +192,9 @@ class _$TaskImpl implements _Task {
       required this.title,
       required this.description,
       required this.dueDate,
-      this.progress = Progress.assigned});
+      this.progress = Progress.assigned,
+      this.isRecurring = false,
+      this.interval});
 
   factory _$TaskImpl.fromJson(Map<String, dynamic> json) =>
       _$$TaskImplFromJson(json);
@@ -184,10 +212,15 @@ class _$TaskImpl implements _Task {
   @override
   @JsonKey()
   final Progress progress;
+  @override
+  @JsonKey()
+  final bool isRecurring;
+  @override
+  final Duration? interval;
 
   @override
   String toString() {
-    return 'Task(userId: $userId, taskId: $taskId, title: $title, description: $description, dueDate: $dueDate, progress: $progress)';
+    return 'Task(userId: $userId, taskId: $taskId, title: $title, description: $description, dueDate: $dueDate, progress: $progress, isRecurring: $isRecurring, interval: $interval)';
   }
 
   @override
@@ -202,13 +235,17 @@ class _$TaskImpl implements _Task {
                 other.description == description) &&
             (identical(other.dueDate, dueDate) || other.dueDate == dueDate) &&
             (identical(other.progress, progress) ||
-                other.progress == progress));
+                other.progress == progress) &&
+            (identical(other.isRecurring, isRecurring) ||
+                other.isRecurring == isRecurring) &&
+            (identical(other.interval, interval) ||
+                other.interval == interval));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType, userId, taskId, title, description, dueDate, progress);
+  int get hashCode => Object.hash(runtimeType, userId, taskId, title,
+      description, dueDate, progress, isRecurring, interval);
 
   @JsonKey(ignore: true)
   @override
@@ -231,7 +268,9 @@ abstract class _Task implements Task {
       required final String title,
       required final String description,
       required final DateTime dueDate,
-      final Progress progress}) = _$TaskImpl;
+      final Progress progress,
+      final bool isRecurring,
+      final Duration? interval}) = _$TaskImpl;
 
   factory _Task.fromJson(Map<String, dynamic> json) = _$TaskImpl.fromJson;
 
@@ -247,6 +286,10 @@ abstract class _Task implements Task {
   DateTime get dueDate;
   @override
   Progress get progress;
+  @override
+  bool get isRecurring;
+  @override
+  Duration? get interval;
   @override
   @JsonKey(ignore: true)
   _$$TaskImplCopyWith<_$TaskImpl> get copyWith =>

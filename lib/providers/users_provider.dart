@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import '../models/user.dart' as local_user;
 import 'package:firebase_auth/firebase_auth.dart';
 
 //A class for managina all user functions
@@ -47,9 +48,11 @@ class UsersProvider extends ChangeNotifier {
   }
 
   //Displaying all users so that one is able to assign users roles
-  Future<List<Map<String, dynamic>>> getAllUsers() async {
+  Future<List<local_user.User>> getAllUsers() async {
     final querysnapshot = await _firestore.collection("users").get();
-    final users = querysnapshot.docs.map((doc) => doc.data()).toList();
+    final users = querysnapshot.docs
+        .map((doc) => local_user.User.fromJson(doc.data()))
+        .toList();
     _users = users;
     return users;
   }
