@@ -191,6 +191,9 @@ class _SingleDepartmentViewState extends State<SingleDepartmentView> {
                                                                           departmentUsers[index]
                                                                               .id,
                                                                           _selectedDepartmemtId!);
+                                                                      Navigator.of(
+                                                                              context)
+                                                                          .pop();
                                                                     },
                                                                     child: const Text(
                                                                         "Confirm Change"),

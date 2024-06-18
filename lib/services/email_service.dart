@@ -2,8 +2,8 @@ import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server.dart';
 
 class EmailService {
-  final String username = 'your-email@gmail.com';
-  final String password = 'your-email-password';
+  final String username = '0838.2020@students.ku.ac.ke';
+  final String password = '26223646';
 
   Future<void> sendTaskNotification(
       String recipientEmail, String subject, String body) async {
