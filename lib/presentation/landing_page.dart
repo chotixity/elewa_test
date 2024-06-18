@@ -1,4 +1,4 @@
-import 'package:elewa_test/repository/auth_service.dart';
+import 'package:elewa_test/services/auth_service.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';

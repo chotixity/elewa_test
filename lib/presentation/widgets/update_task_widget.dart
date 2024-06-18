@@ -6,26 +6,40 @@ import 'package:elewa_test/models/user.dart';
 import 'package:elewa_test/providers/task_provider.dart';
 import 'package:elewa_test/providers/users_provider.dart';
 
-class AddTaskWidget extends StatefulWidget {
-  const AddTaskWidget({super.key});
+class UpdateTaskWidget extends StatefulWidget {
+  final Task task;
+
+  const UpdateTaskWidget({super.key, required this.task});
 
   @override
-  State<AddTaskWidget> createState() => _AddTaskWidgetState();
+  State<UpdateTaskWidget> createState() => _UpdateTaskWidgetState();
 }
 
-class _AddTaskWidgetState extends State<AddTaskWidget> {
+class _UpdateTaskWidgetState extends State<UpdateTaskWidget> {
   final _taskForm = GlobalKey<FormState>();
-  final _titleController = TextEditingController();
-  final _descriptionController = TextEditingController();
+  late TextEditingController _titleController;
+  late TextEditingController _descriptionController;
   DateTime? _dueDate;
   String? _selectedUserId;
   bool _isRecurring = false;
   Duration? _interval;
 
+  @override
+  void initState() {
+    super.initState();
+    _titleController = TextEditingController(text: widget.task.title);
+    _descriptionController =
+        TextEditingController(text: widget.task.description);
+    _dueDate = widget.task.dueDate;
+    _selectedUserId = widget.task.userId;
+    _isRecurring = widget.task.isRecurring;
+    _interval = widget.task.interval;
+  }
+
   void _presentDatePicker() {
     showDatePicker(
       context: context,
-      initialDate: DateTime.now(),
+      initialDate: _dueDate ?? DateTime.now(),
       firstDate: DateTime.now(),
       lastDate: DateTime(2100),
     ).then((pickedDate) {
@@ -39,7 +53,7 @@ class _AddTaskWidgetState extends State<AddTaskWidget> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text('Add Task'),
+      title: const Text('Update Task'),
       content: Form(
         key: _taskForm,
         child: SingleChildScrollView(
@@ -134,6 +148,7 @@ class _AddTaskWidgetState extends State<AddTaskWidget> {
                   decoration: const InputDecoration(
                       labelText: 'Recurring Interval (in days)'),
                   keyboardType: TextInputType.number,
+                  initialValue: _interval?.inDays.toString(),
                   validator: (value) {
                     if (_isRecurring && (value == null || value.isEmpty)) {
                       return 'Please enter an interval';
@@ -163,11 +178,12 @@ class _AddTaskWidgetState extends State<AddTaskWidget> {
                 );
                 return;
               }
-              Provider.of<TaskProvider>(context, listen: false).addTask(
+              Provider.of<TaskProvider>(context, listen: false).updateTask(
+                widget.task.taskId,
                 _selectedUserId!,
                 _titleController.text,
                 _descriptionController.text,
-                Progress.assigned,
+                widget.task.progress,
                 _dueDate!,
                 _isRecurring,
                 _interval,
@@ -175,7 +191,7 @@ class _AddTaskWidgetState extends State<AddTaskWidget> {
               Navigator.of(context).pop();
             }
           },
-          child: const Text('Add'),
+          child: const Text('Update'),
         ),
       ],
     );

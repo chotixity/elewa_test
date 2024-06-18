@@ -1,4 +1,6 @@
 import 'package:elewa_test/presentation/assign_managers.dart';
+import 'package:provider/provider.dart';
+import 'package:elewa_test/services/auth_service.dart';
 import 'package:flutter/material.dart';
 
 class AdminPage extends StatefulWidget {
@@ -18,7 +20,16 @@ class _AdminPageState extends State<AdminPage> {
         automaticallyImplyLeading: false,
         // leading: null,
         backgroundColor: Colors.transparent,
-        //  title: Text('Welcome $user'),
+        title: const Text('Welcome '),
+        actions: [
+          TextButton.icon(
+            onPressed: () {
+              Provider.of<AuthService>(context, listen: false).logout();
+            },
+            label: const Text("Log out"),
+            icon: const Icon(Icons.logout),
+          )
+        ],
       ),
       body: const AllUsersList(),
     );

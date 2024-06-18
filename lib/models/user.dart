@@ -7,6 +7,7 @@ part 'user.g.dart'; // For JSON serialization
 class User with _$User {
   const factory User({
     required String id,
+    required String email,
     required String fullName,
     required String position, //Default normal
     String? department, // Optional, null for managers

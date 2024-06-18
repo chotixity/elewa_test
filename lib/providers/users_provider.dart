@@ -56,4 +56,14 @@ class UsersProvider extends ChangeNotifier {
     _users = users;
     return users;
   }
+
+  // Get user by ID
+  Future<local_user.User?> getUserById(String userId) async {
+    final docSnapshot = await _firestore.collection("users").doc(userId).get();
+    if (docSnapshot.exists) {
+      return local_user.User.fromJson(
+          docSnapshot.data() as Map<String, dynamic>);
+    }
+    return null;
+  }
 }

@@ -1,8 +1,9 @@
 import 'package:elewa_test/presentation/widgets/task_list.dart';
+import 'package:elewa_test/providers/users_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:elewa_test/providers/task_provider.dart';
-import 'package:elewa_test/repository/auth_service.dart';
+import 'package:elewa_test/services/auth_service.dart';
 import '../models/task.dart';
 
 class NormalUserPage extends StatefulWidget {
@@ -17,6 +18,8 @@ class _NormalUserPageState extends State<NormalUserPage> {
   @override
   Widget build(BuildContext context) {
     final authService = Provider.of<AuthService>(context);
+    final userProvider = Provider.of<UsersProvider>(context);
+    final currentUser = userProvider.currentUserDetails;
     final user = authService.currentUser;
 
     if (user == null) {
@@ -29,7 +32,7 @@ class _NormalUserPageState extends State<NormalUserPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Normal User Page'),
+        title: const Text('Welcome, Check your tasks below'),
         actions: [
           TextButton.icon(
             onPressed: () {
@@ -40,9 +43,10 @@ class _NormalUserPageState extends State<NormalUserPage> {
           )
         ],
       ),
-      body: Padding(
-          padding: const EdgeInsets.all(20),
-          child: TaskListScreen(userId: user.uid)),
+      body: const Padding(
+        padding: EdgeInsets.all(20),
+        child: TaskList(),
+      ),
     );
   }
 }

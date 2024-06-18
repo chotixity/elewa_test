@@ -21,6 +21,7 @@ User _$UserFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$User {
   String get id => throw _privateConstructorUsedError;
+  String get email => throw _privateConstructorUsedError;
   String get fullName => throw _privateConstructorUsedError;
   String get position => throw _privateConstructorUsedError; //Default normal
   String? get department => throw _privateConstructorUsedError;
@@ -35,7 +36,12 @@ abstract class $UserCopyWith<$Res> {
   factory $UserCopyWith(User value, $Res Function(User) then) =
       _$UserCopyWithImpl<$Res, User>;
   @useResult
-  $Res call({String id, String fullName, String position, String? department});
+  $Res call(
+      {String id,
+      String email,
+      String fullName,
+      String position,
+      String? department});
 }
 
 /// @nodoc
@@ -52,6 +58,7 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
   @override
   $Res call({
     Object? id = null,
+    Object? email = null,
     Object? fullName = null,
     Object? position = null,
     Object? department = freezed,
@@ -60,6 +67,10 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      email: null == email
+          ? _value.email
+          : email // ignore: cast_nullable_to_non_nullable
               as String,
       fullName: null == fullName
           ? _value.fullName
@@ -84,7 +95,12 @@ abstract class _$$UserImplCopyWith<$Res> implements $UserCopyWith<$Res> {
       __$$UserImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String id, String fullName, String position, String? department});
+  $Res call(
+      {String id,
+      String email,
+      String fullName,
+      String position,
+      String? department});
 }
 
 /// @nodoc
@@ -98,6 +114,7 @@ class __$$UserImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = null,
+    Object? email = null,
     Object? fullName = null,
     Object? position = null,
     Object? department = freezed,
@@ -106,6 +123,10 @@ class __$$UserImplCopyWithImpl<$Res>
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      email: null == email
+          ? _value.email
+          : email // ignore: cast_nullable_to_non_nullable
               as String,
       fullName: null == fullName
           ? _value.fullName
@@ -128,6 +149,7 @@ class __$$UserImplCopyWithImpl<$Res>
 class _$UserImpl implements _User {
   const _$UserImpl(
       {required this.id,
+      required this.email,
       required this.fullName,
       required this.position,
       this.department});
@@ -138,6 +160,8 @@ class _$UserImpl implements _User {
   @override
   final String id;
   @override
+  final String email;
+  @override
   final String fullName;
   @override
   final String position;
@@ -147,7 +171,7 @@ class _$UserImpl implements _User {
 
   @override
   String toString() {
-    return 'User(id: $id, fullName: $fullName, position: $position, department: $department)';
+    return 'User(id: $id, email: $email, fullName: $fullName, position: $position, department: $department)';
   }
 
   @override
@@ -156,6 +180,7 @@ class _$UserImpl implements _User {
         (other.runtimeType == runtimeType &&
             other is _$UserImpl &&
             (identical(other.id, id) || other.id == id) &&
+            (identical(other.email, email) || other.email == email) &&
             (identical(other.fullName, fullName) ||
                 other.fullName == fullName) &&
             (identical(other.position, position) ||
@@ -167,7 +192,7 @@ class _$UserImpl implements _User {
   @JsonKey(ignore: true)
   @override
   int get hashCode =>
-      Object.hash(runtimeType, id, fullName, position, department);
+      Object.hash(runtimeType, id, email, fullName, position, department);
 
   @JsonKey(ignore: true)
   @override
@@ -186,6 +211,7 @@ class _$UserImpl implements _User {
 abstract class _User implements User {
   const factory _User(
       {required final String id,
+      required final String email,
       required final String fullName,
       required final String position,
       final String? department}) = _$UserImpl;
@@ -194,6 +220,8 @@ abstract class _User implements User {
 
   @override
   String get id;
+  @override
+  String get email;
   @override
   String get fullName;
   @override

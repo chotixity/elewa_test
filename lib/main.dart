@@ -1,4 +1,4 @@
-import 'package:elewa_test/repository/auth_service.dart';
+import 'package:elewa_test/services/auth_service.dart';
 import 'package:elewa_test/providers/department_provider.dart';
 import 'package:elewa_test/providers/task_provider.dart';
 import 'package:elewa_test/providers/users_provider.dart';

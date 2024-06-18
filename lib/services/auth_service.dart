@@ -23,6 +23,7 @@ class AuthService extends ChangeNotifier {
       if (user != null) {
         await _firestore.collection('users').doc(user.uid).set({
           "id": user.uid,
+          "email": user.email,
           "fullName": fullName,
           "position": "normal",
           "department": null
