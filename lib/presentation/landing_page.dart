@@ -51,95 +51,97 @@ class _LandingPageState extends State<LandingPage> {
   }
 
   Widget mobileView(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        const Text(
-          softWrap: true,
-          "Real productivity begins here. Manage your teams and their tasks",
-          style: TextStyle(
-              fontSize: 26,
-              overflow: TextOverflow.clip,
-              fontWeight: FontWeight.bold),
-        ),
-        const Spacer(),
-        Flexible(
-          child: Form(
-            key: _formKey,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                _login
-                    ? const SizedBox()
-                    : TextFormField(
-                        controller: _fullNameController,
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return "Enter full name";
-                          } else if (!value.contains(" ")) {
-                            return "Please enter ypur second or last name";
-                          }
-                          return null;
-                        },
-                        decoration: const InputDecoration(
-                          label: Text("FullName"),
+    return SingleChildScrollView(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          const Text(
+            softWrap: true,
+            "Real productivity begins here. Manage your teams and their tasks",
+            style: TextStyle(
+                fontSize: 26,
+                overflow: TextOverflow.clip,
+                fontWeight: FontWeight.bold),
+          ),
+          const Spacer(),
+          Flexible(
+            child: Form(
+              key: _formKey,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  _login
+                      ? const SizedBox()
+                      : TextFormField(
+                          controller: _fullNameController,
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return "Enter full name";
+                            } else if (!value.contains(" ")) {
+                              return "Please enter ypur second or last name";
+                            }
+                            return null;
+                          },
+                          decoration: const InputDecoration(
+                            label: Text("FullName"),
+                          ),
                         ),
-                      ),
-                const SizedBox(
-                  height: 20,
-                ),
-                TextFormField(
-                  controller: _emailController,
-                  decoration: const InputDecoration(label: Text("Email")),
-                ),
-                TextFormField(
-                  controller: _passwordController,
-                  decoration: const InputDecoration(label: Text('Password')),
-                ),
-                const SizedBox(
-                  height: 40,
-                ),
-                loginButton(),
-                const SizedBox(
-                  height: 30,
-                ),
-                _login
-                    ? RichText(
-                        text: TextSpan(
-                          children: <InlineSpan>[
-                            const TextSpan(
-                              text: "Have No Account? ",
-                              style: TextStyle(color: Colors.cyan),
-                            ),
-                            TextSpan(
-                                text: "Sign Up",
-                                style: const TextStyle(color: Colors.purple),
-                                recognizer: TapGestureRecognizer()
-                                  ..onTap = () => _toggleMode())
-                          ],
-                        ),
-                      )
-                    : RichText(
-                        text: TextSpan(
-                          children: <InlineSpan>[
-                            const TextSpan(
-                              text: "Have An Account? ",
-                              style: TextStyle(color: Colors.cyan),
-                            ),
-                            TextSpan(
-                                text: "Login",
-                                style: const TextStyle(color: Colors.purple),
-                                recognizer: TapGestureRecognizer()
-                                  ..onTap = () => _toggleMode())
-                          ],
-                        ),
-                      )
-              ],
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  TextFormField(
+                    controller: _emailController,
+                    decoration: const InputDecoration(label: Text("Email")),
+                  ),
+                  TextFormField(
+                    controller: _passwordController,
+                    decoration: const InputDecoration(label: Text('Password')),
+                  ),
+                  const SizedBox(
+                    height: 40,
+                  ),
+                  loginButton(),
+                  const SizedBox(
+                    height: 30,
+                  ),
+                  _login
+                      ? RichText(
+                          text: TextSpan(
+                            children: <InlineSpan>[
+                              const TextSpan(
+                                text: "Have No Account? ",
+                                style: TextStyle(color: Colors.cyan),
+                              ),
+                              TextSpan(
+                                  text: "Sign Up",
+                                  style: const TextStyle(color: Colors.purple),
+                                  recognizer: TapGestureRecognizer()
+                                    ..onTap = () => _toggleMode())
+                            ],
+                          ),
+                        )
+                      : RichText(
+                          text: TextSpan(
+                            children: <InlineSpan>[
+                              const TextSpan(
+                                text: "Have An Account? ",
+                                style: TextStyle(color: Colors.cyan),
+                              ),
+                              TextSpan(
+                                  text: "Login",
+                                  style: const TextStyle(color: Colors.purple),
+                                  recognizer: TapGestureRecognizer()
+                                    ..onTap = () => _toggleMode())
+                            ],
+                          ),
+                        )
+                ],
+              ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
