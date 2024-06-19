@@ -42,7 +42,9 @@ class _TaskListState extends State<TaskList> {
           }
 
           return SizedBox(
-            width: MediaQuery.sizeOf(context).width * .6,
+            width: MediaQuery.sizeOf(context).width > 600
+                ? MediaQuery.sizeOf(context).width * .6
+                : MediaQuery.sizeOf(context).width,
             child: ListView.builder(
               itemCount: tasks.length,
               itemBuilder: (context, index) {
