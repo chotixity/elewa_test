@@ -2,8 +2,6 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../models/task.dart';
-import '../../models/department.dart';
-import '../../models/user.dart' as local_user;
 import '../../providers/users_provider.dart';
 import '../../providers/task_provider.dart';
 import '../../providers/department_provider.dart';

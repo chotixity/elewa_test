@@ -197,7 +197,9 @@ class _ManagerScreenState extends State<ManagerScreen>
                           .where((user) => user.department == null)
                           .toList();
                       return SizedBox(
-                        width: MediaQuery.sizeOf(context).width * .4,
+                        width: MediaQuery.sizeOf(context).width > 600
+                            ? MediaQuery.sizeOf(context).width * .4
+                            : MediaQuery.sizeOf(context).width,
                         child: ListView.builder(
                           shrinkWrap: true,
                           itemCount: usersWithoutDepartment.length,
@@ -335,7 +337,9 @@ class _ManagerScreenState extends State<ManagerScreen>
                     }
 
                     return SizedBox(
-                      width: MediaQuery.sizeOf(context).width * .6,
+                      width: MediaQuery.sizeOf(context).width > 600
+                          ? MediaQuery.sizeOf(context).width * .6
+                          : MediaQuery.sizeOf(context).width,
                       child: ListView.builder(
                         shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(),

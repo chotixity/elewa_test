@@ -2,9 +2,7 @@ import 'package:elewa_test/presentation/widgets/task_list.dart';
 import 'package:elewa_test/providers/users_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:elewa_test/providers/task_provider.dart';
 import 'package:elewa_test/services/auth_service.dart';
-import '../models/task.dart';
 
 class NormalUserPage extends StatefulWidget {
   static const routename = "normalUserPage";

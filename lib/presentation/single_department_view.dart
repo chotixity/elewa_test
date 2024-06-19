@@ -74,7 +74,7 @@ class _SingleDepartmentViewState extends State<SingleDepartmentView> {
                       ),
                     ),
                     SizedBox(
-                      height: 250,
+                      height: 400,
                       child: Padding(
                         padding: const EdgeInsets.all(20),
                         child: FutureBuilder(
@@ -101,8 +101,11 @@ class _SingleDepartmentViewState extends State<SingleDepartmentView> {
                                 children: [
                                   Expanded(
                                     child: SizedBox(
-                                      width:
-                                          MediaQuery.sizeOf(context).width * .4,
+                                      width: MediaQuery.sizeOf(context).width >
+                                              600
+                                          ? MediaQuery.sizeOf(context).width *
+                                              .6
+                                          : MediaQuery.sizeOf(context).width,
                                       child: ListView.builder(
                                           itemCount: departmentUsers.length,
                                           itemBuilder: (context, index) {
@@ -212,8 +215,11 @@ class _SingleDepartmentViewState extends State<SingleDepartmentView> {
                                           }),
                                     ),
                                   ),
-                                  const Text(
+                                  Text(
                                     "Department Dashboard",
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .displayMedium,
                                   ),
                                   FutureBuilder<List<Task>>(
                                     future: Provider.of<TaskProvider>(context,
@@ -252,11 +258,21 @@ class _SingleDepartmentViewState extends State<SingleDepartmentView> {
                                                 CrossAxisAlignment.start,
                                             children: [
                                               Text(
-                                                  'Pending Tasks: ${pendingTasks.length}'),
+                                                'Pending Tasks: ${pendingTasks.length}',
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .bodyLarge,
+                                              ),
                                               Text(
-                                                  'Started Tasks: ${startedTasks.length}'),
+                                                  'Started Tasks: ${startedTasks.length}',
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .bodyLarge),
                                               Text(
-                                                  'Completed Tasks: ${doneTasks.length}'),
+                                                  'Completed Tasks: ${doneTasks.length}',
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .bodyLarge),
                                             ],
                                           ),
                                         );
